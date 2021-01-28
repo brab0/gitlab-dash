@@ -1,0 +1,55 @@
+version: '3.7'
+
+volumes:
+   data: {}
+
+services:
+   sync:
+      build:
+         target: ${APPLICATION_ENV}
+         context: ./sync
+      container_name: sync      
+      env_file:
+         - .env
+      working_dir: /srv/sync
+      volumes:
+         - ./sync:/srv/sync
+         - ./.env:/srv/app/.env
+         - /srv/sync/node_modules
+      links:
+         - database
+      depends_on:
+         - database
+      restart: always
+
+   database:
+      build:
+         context: ./mongodb
+      container_name: mongodb
+      env_file:
+         - .env
+      environment:
+         - AUTH=yes
+         - MONGODB_ADMIN_USER=${DB_ROOT}
+         - MONGODB_ADMIN_PASS=${DB_ROOT_PWD}
+         - MONGODB_APPLICATION_DATABASE=${DB_NAME}
+         - MONGODB_APPLICATION_USER=${DB_USER}
+         - MONGODB_APPLICATION_PASS=${DB_USER_PWD}
+      volumes:
+         - data:/data
+      ports:
+         - 28869:27017
+      restart: always
+
+   metabase:
+      image: metabase/metabase
+      container_name: metabase
+      volumes:
+         - data:/metabase.db
+      ports:
+         - 8080:3000
+      links:
+         - database
+      depends_on:
+         - database
+
