@@ -32,9 +32,13 @@ import { transform } from './label';
       return { on }
    }
    
-   watch('created_after').on(new Date(), issues => Model.insertMany(issues));
-   watch('updated_after').on(new Date(), async issues => {
-      const updates = issues.map(issue => Model.updateOne({ id: issue.id }, issue));
-      await Promise.all(updates);
-   })
+   try {
+      watch('created_after').on(new Date(), issues => Model.insertMany(issues));
+      watch('updated_after').on(new Date(), async issues => {
+         const updates = issues.map(issue => Model.updateOne({ id: issue.id }, issue));
+         await Promise.all(updates);
+      })
+   } catch(err) {
+      console.log('err: ' + err);
+   }   
 })()

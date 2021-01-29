@@ -19,23 +19,40 @@ export default class Request {
     }
 
     async get(endpoint) {
-        const res = await axios.create(this.defaultOptions).get(endpoint);
-        return res.data;
+        try {
+            const res = await axios.create(this.defaultOptions).get(endpoint);
+            return res.data;
+        } catch (err) {
+            console.log('err: ' + err);
+        }     
     }
 
     async post(endpoint, data = null) {
-        const res = await axios.create(this.defaultOptions).post(endpoint, data);
-        return res.data;
+        try {
+            const res = await axios.create(this.defaultOptions).post(endpoint, data);
+            return res.data;
+        } catch (err) {
+            console.log('err: ' + err);
+        }        
     }
 
     async put(endpoint, data = null) {
-        const res = await axios.create(this.defaultOptions).put(endpoint, data);
-        return res.data;
+        try {
+            const res = await axios.create(this.defaultOptions).put(endpoint, data);
+            return res.data;
+        } catch (err) {
+            console.log('err: ' + err);
+        }        
     }
 
-    async delete(endpoint) {
-        const res = await axios.create(this.defaultOptions).delete(endpoint);
-        return res.data;
+    async delete(endpoint) {        
+        try {
+            const res = await axios.create(this.defaultOptions).delete(endpoint);
+            return res.data;
+        } 
+        catch (err) {
+            console.log('err: ' + err);
+        }
     }
 }
 
