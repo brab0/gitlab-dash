@@ -14,7 +14,7 @@ export const transform = (labels: any) => {
          
          switch(property.type) {
             case String:
-               return value
+               return !property.enum ? value : value === '' ? property.enum[0] : property.enum[1]
             case Number:
                return Number(value)
             case Boolean:

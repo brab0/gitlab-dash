@@ -24,7 +24,7 @@ export const Properties = {
     type: { text_pattern: 'Type: ', type: String },
     goal: { text_pattern: 'Goal: ', type: String },
     weight: { text_pattern: 'Weight: ', type: Number },
-    not_planned: { text_pattern: 'Not Planned', type: Boolean }
+    planning: { text_pattern: 'Not Planned', type: String, enum: ['Não Planejada', 'Planejada'], default: 'Planejada' }
 };
 
 export const Model = model('issue', new Schema(Properties));
