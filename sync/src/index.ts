@@ -35,7 +35,17 @@ import { transform } from './label';
    try {
       watch('created_after').on(new Date(), issues => Model.insertMany(issues));
       watch('updated_after').on(new Date(), async issues => {
-         const updates = issues.map(issue => Model.updateOne({ id: issue.id }, issue));
+         const updates = issues.map(async issue => {
+            const dbIssues = await Model.find({ id: issue.id });
+            const wasMovedToNewSprint = dbIssues.some(iss => iss.sprint && iss.sprint !== issue.sprint);
+
+            if(wasMovedToNewSprint) {
+               return Model.insert(issue)
+            } else {
+               return Model.updateOne({ _id: dbIssues[dbIssues.length - 1]._id }, issue)
+            }            
+         });
+
          await Promise.all(updates);
       })
    } catch(err) {
