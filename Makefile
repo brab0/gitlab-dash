@@ -11,13 +11,13 @@ help:
 	@grep -E '^[a-zA-Z-]+:.*?## .*$$' Makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "[32m%-17s[0m %s\n", $$1, $$2}'
 
 bundle:
-	mkdir -p bundle
-	cp -r mongodb bundle	
-	cp .env.dist bundle && mv bundle/.env.dist bundle/.env
-	cp docker-compose.production.yml bundle && mv bundle/docker-compose.production.yml bundle/docker-compose.yml
-	cp -r metabase.db bundle
-	cp -r sync bundle
-	rm -rf bundle/sync/node_modules
+	mkdir -p git-bundle
+	cp -r mongodb git-bundle	
+	cp .env git-bundle
+	cp docker-compose.production.yml git-bundle && mv git-bundle/docker-compose.production.yml git-bundle/docker-compose.yml
+	cp -r metabase.db git-bundle
+	cp -r sync git-bundle
+	rm -rf git-bundle/sync/node_modules
 
 up: ## Up Docker container
 	docker-compose up --build -d
@@ -28,14 +28,14 @@ start: ## Start docker container
 stop: ## Stop running docker container
 	docker-compose stop
 
-seeds: ## Run api seeds
-	docker-compose exec api npm run seeds-dev
+seeds: ## Run gitlab_sync seeds
+	docker-compose exec gitlab_sync npm run seeds-dev
 
 exec: ## Connect to application container shell
 	docker-compose exec ${ARGS}
 
 root: ## Connect to application container shell as root user
-	docker-compose exec --user root api /bin/bash
+	docker-compose exec --user root gitlab_sync /bin/bash
 
 restart: ## Starts a log server that displays logs in real time
 	docker-compose restart ${ARGS}

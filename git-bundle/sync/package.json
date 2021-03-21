@@ -1,0 +1,27 @@
+{
+  "name": "sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "mongoose": "^5.11.13"
+  },
+  "devDependencies": {
+    "@types/node": "^13.9.2",
+    "nodemon": "^2.0.6",
+    "ts-node": "^8.7.0",
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "production": "node ./src/index.js --max-old-space-size=512 --max-semi-space-size=2",
+    "development": "nodemon --watch src --exec node --max-old-space-size=512 --max-semi-space-size=2 -r ts-node/register src/index.ts",
+    "seeds-dev": "nodemon --watch src --exec node --max-old-space-size=512 --max-semi-space-size=2 -r ts-node/register src/seeds.ts",
+    "seeds-prod": "node ./src/seeds.js --max-old-space-size=512 --max-semi-space-size=2",
+    "build": "tsc"
+  }
+}
